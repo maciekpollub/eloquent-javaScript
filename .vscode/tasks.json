@@ -1,0 +1,10 @@
+{
+  "version": "0.1.0",
+  "linux": {
+    "command": "xdg-open"
+  },
+  "idShellCommand": true,
+  "showOutput": "never",
+  "args": ["index.html"]
+}
+
