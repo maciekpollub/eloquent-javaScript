@@ -528,3 +528,19 @@ class MatrixIterator {
     return {value, done: false};
   }
 }
+
+
+
+
+
+
+$(document).ready(function() {
+  $("#head").click(function() {
+    alert($(".para").text())  
+  }  
+)
+
+})
+
+
+
