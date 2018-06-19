@@ -540,7 +540,11 @@ $(document).ready(function() {
   }  
 )
 
-})
-
-
+$(".info").click(
+  function () {
+    $(this).toggleClass("colorfull");
+  }
+);
+}
+)
 
