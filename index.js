@@ -530,21 +530,20 @@ class MatrixIterator {
 }
 
 
-
-
-
-
-$(document).ready(function() {
-  $("#head").click(function() {
-    alert($(".para").text())  
-  }  
-)
-
-$(".info").click(
-  function () {
-    $(this).toggleClass("colorfull");
-  }
-);
+function showText(paraOrderNr) {
+  let para = document.getElementsByTagName("p")[paraOrderNr];
+  para.style.color="black";
+  para.style.fontWeight = "800";
 }
-)
+
+function hideText(binary) {
+  let secondPara = document.getElementsByTagName("p")[1];
+  let b = binary;
+  if (b == 0){
+    document.getElementsByTagName("p")[1].previousElementSibling.style.color="transparent";  
+  } else {
+    document.getElementsByTagName("p")[1].nextElementSibling.style.color="transparent";
+  }
+}
+
 
