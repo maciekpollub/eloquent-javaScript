@@ -10,10 +10,14 @@
 
 <body>
   <div id="list">
-    <button onclick="showText(0)">Show paragraph 1</button>
-    <button onclick="showText(1)">Show paragraph 2</button>
-    <button onclick="showText(2)">Show paragraph 3</button>
-    <p>
+    <h2>A page fro exercises</h2>
+    <div class="buttons">
+        <button onclick="showText(0)">Show paragraph 1</button>
+        <button onclick="showText(1)">Show paragraph 2</button>
+        <button onclick="showText(2)">Show paragraph 3</button>    
+        <button onclick="removeElem()">Remove the title</button>
+    </div>
+       <p>
       Paragraph one ;sldkjalfgka  lkfja;lk ;lkdfgja ;lsdfkg a;dlfkg jad;lfkg .
       
     </p>
@@ -26,6 +30,9 @@
       Paragraph three ;sldfka ;lsdkg a;lskja;lskdj ;asldkja; sd;alksdj a;lksd a;lskd galsk ga;lskdgja sdklfa ;lk .
     </p>
   </div>
+  <!-- -----------------------------------------------game----------------------------------------------- -->
+  <h3>A recruitment game</h3>
+  <p>You are now at <span id = "output"></span>.</p><button onclick = "throwCube()">Throw a cube</button>
   <script src="index.js" type="text/javascript"></script>
   
 </body>

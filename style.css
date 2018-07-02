@@ -1,4 +1,4 @@
-.colorfull {
+/*.colorfull {
   color:red;
 }
 
@@ -6,3 +6,8 @@ p {
   color: transparent;
   border: 1px solid black;
 }
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}*/

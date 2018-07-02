@@ -529,7 +529,7 @@ class MatrixIterator {
   }
 }
 
-
+/*
 function showText(paraOrderNr) {
   let para = document.getElementsByTagName("p")[paraOrderNr];
   para.style.color="black";
@@ -546,4 +546,26 @@ function hideText(binary) {
   }
 }
 
+function removeElem() {
+  let title = document.getElementsByTagName("h2");
+  title.remove();
+}*/
 
+
+/*-----------------------------------------------game-------------------------------------------*/
+const board = [];
+(function createBoard() {
+  for (let i = 0; i < 20; i++) {
+    board[i] = `field_${i}`;
+  }
+})();
+let currentLocation  = 0;
+let output = document.getElementById("output");
+output.innerHTML = board[currentLocation];
+
+function throwCube() {
+  let result = Math.ceil(Math.random() * 6);
+  currentLocation += result;
+  console.log(result,currentLocation);
+  output.innerHTML = board[currentLocation];
+}
