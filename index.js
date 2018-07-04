@@ -36,7 +36,7 @@ function frequency(event, agenda){
 //------------------------------------------------------------
 //Using objects as maps \ functions towards dynamic database generating
 
-let map = {};
+/*let map = {};
 function storeHeight(name, height){
   map[name] = height;
 }
@@ -47,15 +47,9 @@ storeHeight('cecylia', 165);
 storeHeight('dariusz', 180);
 storeHeight("eugenia", 160);
 
-//Checking if a certain person is already inside map..
-
-/*console.log('mariusz' in map);*/
-
-//Making raport via "for in" loop
-
 for (let name in map){
   console.log(('The height of ' + name + ' is: ' + map[name] + '.' ));
-}
+}*/
 
 //--------------------------------------------------------------------
 
@@ -555,17 +549,259 @@ function removeElem() {
 /*-----------------------------------------------game-------------------------------------------*/
 const board = [];
 (function createBoard() {
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 21; i++) {
     board[i] = `field_${i}`;
   }
-})();
-let currentLocation  = 0;
-let output = document.getElementById("output");
-output.innerHTML = board[currentLocation];
 
+})();
+
+
+
+let specialFieldMessages = [];
+for(let i = 0; i < 19; i++) {
+  specialFieldMessages[i] = 'Nice, keep on moving ;';
+};
+specialFieldMessages[12] = 'Unfortunatelly, game is over.';
+specialFieldMessages[19] = 'Oops, this field moves you back to field_11.';
+specialFieldMessages[20] = 'Congratulations! You have succeeded!';
+
+let currentLocation  = 0;
+let throwsCounter = 0;
+let resultTotal = 0;
+let gameMessage = "";
+
+
+
+let btn = document.querySelector("#cube");
+btn.style.cursor = "pointer";
+
+let outId = document.getElementById("outputid");
+outId.innerHTML = board[currentLocation];
+
+render();
 function throwCube() {
-  let result = Math.ceil(Math.random() * 6);
-  currentLocation += result;
-  console.log(result,currentLocation);
-  output.innerHTML = board[currentLocation];
+  playGame();
 }
+
+function playGame() {
+  let result = Math.ceil(Math.random() * 6);
+  
+  resultTotal += result;
+  if (currentLocation + result > 20) {
+    let diff = currentLocation + result - 20;
+    currentLocation = 20 - diff;
+  } else {
+    currentLocation += result;
+    if(currentLocation === 19) {
+      setTimeout(() => { 
+        currentLocation = 11;
+        render();
+        console.log(`new pos: ${currentLocation}`);
+      },
+        3000);
+    }
+  }
+  throwsCounter += 1;
+  gameMessage = specialFieldMessages[currentLocation];
+  console.log(`Throw number ${throwsCounter}, Current result: ${result}, Current location: ${currentLocation}.`);  
+  render();
+}
+
+
+
+function render() {
+  switch (currentLocation) {
+    case 0:
+      outId.innerHTML = `You are at starting position. Throw a cube to move foreward.`;  
+      break;
+    case 20:
+      outId.innerHTML = `You are at ${board[currentLocation]} <br> ${gameMessage}`;
+      btn.disabled="true";
+      let btnRP = document.createElement("input");
+      btnRP.type="button";
+      btnRP.value="Play again";
+      btnRP.addEventListener("click", restartHandler , false)  
+      document.body.appendChild(btnRP);
+      function restartHandler() {
+        currentLocation  = 0;
+        throwsCounter = 0;
+        resultTotal = 0;
+        gameMessage = "";
+        btn.removeAttribute("disabled");
+        btnRP.style.visibility="hidden";
+      }
+      break;
+    default:
+      outId.innerHTML = `You are at ${board[currentLocation]} <br> ${gameMessage}`;
+  }
+}
+/*---------------------------------------------------template-----------------------------------------------------
+const map = [];
+map[0] = "field0";
+map[1] = "field1";
+map[2] = "field2";
+map[3] = "field3";
+map[4] = "field4";
+map[5] = "field5";
+map[6] = "field6";
+map[7] = "field7";
+map[8] = "field8";
+
+let mapLocation = 4;
+const images = [];
+images[0] = "P1220452.JPG";
+images[1] = "PB150285.JPG";
+images[2] = "PB150286.JPG";
+images[3] = "PB150287.JPG";
+images[4] = "PB150287.JPG";
+images[5] = "PB250300.JPG";
+images[6] = "PB250301.JPG";
+images[7] = "PB250302.JPG";
+images[8] = "PB250303.JPG";
+
+const blockedPathMessages = [];
+blockedPathMessages[0] = "It is too dangerous to move that way.";
+blockedPathMessages[1] = "A friend of yours holds your back";
+blockedPathMessages[2] = "Smbody blocks your way.";
+blockedPathMessages[3] = "You cant step over the whole.";
+blockedPathMessages[4] = "";
+blockedPathMessages[5] = "The gate locks shut.";
+blockedPathMessages[6] = "The river is too deep to cross.";
+blockedPathMessages[7] = "The trees are to thick to pass.";
+blockedPathMessages[8] = "You are to tired to move forward..";
+
+const items = ["flute", "stone", "sword"];
+let itemLocations = [1, 6, 8];
+
+let backpack = [];
+
+let playersInput = "";
+let gameMessage = "";
+let actionsIKnow = ["north", "east", "south", "west", "take", "use", "drop"];
+let currentAction = "";
+let itemsIKnow = ["flute", "stone", "sword"];
+let currentItem = "";
+
+let image = document.querySelector("img");
+let output = document.querySelector("#output");
+let input = document.querySelector("#input");
+
+let button = document.querySelector("#btn-bottom");
+button.style.cursor = "pointer";
+button.addEventListener("click", clickHandler, false);
+
+
+
+
+render();
+function clickHandler() {
+  playGame();
+}
+function playGame() {
+  playersInput = input.value;
+  playersInput = playersInput.toLowerCase();
+  gameMessage = "";
+  currentAction = "";
+  for(let i = 0; i < actionsIKnow.length; i++) {
+    if(playersInput.indexOf(actionsIKnow[i]) !== -1) {
+      currentAction = actionsIKnow[i];
+      console.log("players action: " + currentAction);
+      break;
+    }
+  }
+  for (let i = 0; i < itemsIKnow.length; i++) { 
+    if (playersInput.indexOf(itemsIKnow[i]) !== -1) {
+      item = itemsIKnow[i];
+      console.log("players item" + item);
+    }
+  }
+
+  switch(currentAction) {
+    case "north":
+      if (mapLocation >= 3) {
+        mapLocation -= 3;
+      } else {
+        gameMessage = blockedPathMessages[mapLocation];
+      }
+      break;
+    case "east":
+      if (mapLocation % 3 != 2) {
+        mapLocation += 1;
+      } else {
+        gameMessage = blockedPathMessages[mapLocation];
+      }
+      break;
+    case "north":
+      if (mapLocation < 6) {
+        mapLocation += 3;
+      } else {
+        gameMessage = blockedPathMessages[mapLocation];
+      }
+      break;
+    case "west":
+      if (mapLocation % 3 != 0) {
+        mapLocation -= 1;
+      } else {
+        gameMessage = blockedPathMessages[mapLocation];
+      }
+      break;
+    case "take":
+      takeItem();
+      break;
+    case "drop":
+      dropItem();
+      break;
+    case "use":
+      useItem();
+      break;
+    default: 
+      gameMessage = "I do not understand that.";
+    
+  }
+  render();
+}
+
+function takeItem() {
+  let itemIndexNumber = items.indexOf(item);
+  if (itemIndexNumber !== -1 && itemLocation[intemIndexNumber] === mapLocation) {
+    gameMessage = "You take the " + item +"!";
+    backpack.push(item);
+    items.splice(itemIndexNumber, 1);
+    itemLocations.splice(itemIndexNumber, 1);
+
+    console.log("World items: " + items);
+    console.log("backpack items: " + backpack);
+  } else {
+    gameMessage = "You cant take that now.";
+  }
+}
+
+function dropItem() {
+  if (backpack.length != 0) {
+    let backpackIndexNumber = backpack.indexOf(item);
+    if (backpackIndexNumber !== -1) {
+      gameMessage = "You drop the " + item + ".";
+      items.push(backpack[backpackIndexNumber]);
+      itemLocations.push(mapLocation);
+      backpack.splice(backpackIndexNumber, 1);
+    } else {
+      gameMessage = "You haven't got that weapon.";
+    }
+  } else {
+    gameMessage = "You have nothing to drop now.."
+  }
+}
+
+function render() {
+  output.innerHTML = map[mapLocation];
+  image.src = "./" + images[mapLocation];
+  for (let i = 0; i < items.length; i++) {
+    if (mapLocation === itemLocations[i]) {
+      output.innerHTML += "<br> You see a <strong>" + items[i] +"</strong> here.";
+    }
+  }
+  output.innerHTML += "<br><em>" + gameMessage + "</em>";
+  if (backpack.length !== 0) {
+    output.innerHTML += "<br>You are carrying: "+ backpack.join(",");
+  } 
+}*/

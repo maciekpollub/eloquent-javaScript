@@ -11,3 +11,36 @@ p {
   display: flex;
   justify-content: center;
 }*/
+
+.field {
+  display: inline-block;
+  border: 2px solid black;
+  width: 15px;
+  height: 15px;
+}
+
+#board {
+  display: flex;
+  justify-content: center;
+}
+
+#startField {
+  border: 1px dashed black;
+  background-color: lightgreen;
+}
+
+#cube {
+  display: block;
+  margin: 30px auto;
+}
+
+.number {
+  display: flex;
+  justify-content: center;
+  margin-top: 5%;
+  font-size: 0.8em;
+}
+
+#outputid {
+  text-align: center;
+}
