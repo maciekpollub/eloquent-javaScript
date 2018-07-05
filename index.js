@@ -575,6 +575,7 @@ let gameMessage = "";
 let btn = document.querySelector("#cube");
 btn.style.cursor = "pointer";
 
+
 let outId = document.getElementById("outputid");
 outId.innerHTML = board[currentLocation];
 
@@ -583,8 +584,20 @@ function throwCube() {
   playGame();
 }
 
+function styleFields(index) {
+  let fields = document.getElementsByClassName("number");
+  for (let i = 0; i < fields.length; i++) {
+    fields[i].style.backgroundColor = "white";
+  }
+  let currentPara = document.getElementsByClassName("number")[index];
+  console.log(index, currentPara);
+  currentPara.style.backgroundColor = "lightgreen";
+}
+
+
+
 function playGame() {
-  let result = Math.ceil(Math.random() * 6);
+  result = Math.ceil(Math.random() * 6);
   
   resultTotal += result;
   if (currentLocation + result > 20) {
@@ -597,10 +610,12 @@ function playGame() {
         currentLocation = 11;
         render();
         console.log(`new pos: ${currentLocation}`);
+        styleFields(currentLocation);
       },
         3000);
     }
   }
+  
   throwsCounter += 1;
   gameMessage = specialFieldMessages[currentLocation];
   console.log(`Throw number ${throwsCounter}, Current result: ${result}, Current location: ${currentLocation}.`);  
@@ -608,31 +623,38 @@ function playGame() {
 }
 
 
-
 function render() {
+  styleFields(currentLocation);
   switch (currentLocation) {
     case 0:
-      outId.innerHTML = `You are at starting position. Throw a cube to move foreward.`;  
+      outId.innerHTML = `You are at the starting position. Throw a cube to move foreward.`;  
       break;
-    case 20:
+    case (20 || 12):{
       outId.innerHTML = `You are at ${board[currentLocation]} <br> ${gameMessage}`;
-      btn.disabled="true";
-      let btnRP = document.createElement("input");
-      btnRP.type="button";
-      btnRP.value="Play again";
-      btnRP.addEventListener("click", restartHandler , false)  
-      document.body.appendChild(btnRP);
+      btn.setAttribute("disabled", true)
+      let restartNode = document.createElement("input");
+      restartNode.type="button";
+      restartNode.value="Play again";
+      restartNode.style.display = "flex";
+      restartNode.style.margin = "auto";
+
+      restartNode.addEventListener("click", restartHandler , false)  
+      btn.parentNode.appendChild(restartNode);
       function restartHandler() {
-        currentLocation  = 0;
+        currentLocation = 0;
         throwsCounter = 0;
         resultTotal = 0;
         gameMessage = "";
         btn.removeAttribute("disabled");
-        btnRP.style.visibility="hidden";
+        restartNode.style.visibility = "hidden";
+        styleFields(currentLocation);
+        render();
       }
-      break;
+
+    }
+            break;
     default:
-      outId.innerHTML = `You are at ${board[currentLocation]} <br> ${gameMessage}`;
+      outId.innerHTML = `Throw result: ${result}. <br> You arrived at ${board[currentLocation]} <br> ${gameMessage}`;
   }
 }
 /*---------------------------------------------------template-----------------------------------------------------
