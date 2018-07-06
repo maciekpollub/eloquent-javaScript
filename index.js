@@ -555,8 +555,6 @@ const board = [];
 
 })();
 
-
-
 let specialFieldMessages = [];
 for(let i = 0; i < 19; i++) {
   specialFieldMessages[i] = 'Nice, keep on moving ;';
@@ -570,11 +568,8 @@ let throwsCounter = 0;
 let resultTotal = 0;
 let gameMessage = "";
 
-
-
 let btn = document.querySelector("#cube");
 btn.style.cursor = "pointer";
-
 
 let outId = document.getElementById("outputid");
 outId.innerHTML = board[currentLocation];
@@ -594,11 +589,45 @@ function styleFields(index) {
   currentPara.style.backgroundColor = "lightgreen";
 }
 
-
+function render() {
+  styleFields(currentLocation);
+  function prepare(position) {
+    outId.innerHTML = `You are at ${board[position]} <br> ${gameMessage} <br> Total number of throws: ${throwsCounter} <br> Your average result: ${resultTotal/throwsCounter}.`;
+    btn.setAttribute("disabled", true)
+    let restartNode = document.createElement("input");
+    restartNode.type="button";
+    restartNode.value="Play again";
+    restartNode.style.display = "flex";
+    restartNode.style.margin = "auto";
+    restartNode.addEventListener("click", restartHandler , false)  
+    btn.parentNode.appendChild(restartNode);
+    function restartHandler() {
+      currentLocation = 0;
+      throwsCounter = 0;
+      resultTotal = 0;
+      gameMessage = "";
+      btn.removeAttribute("disabled");
+      restartNode.style.visibility = "hidden";
+      render();
+    }
+  }
+  switch (currentLocation) {
+    case 0:
+      outId.innerHTML = `You are at the starting position. Throw a cube to move foreward.`;  
+      break;
+    case 20:
+      prepare(currentLocation);
+      break;
+    case 12:
+      prepare(currentLocation);
+      break;
+    default:
+      outId.innerHTML = `Throw result: ${result}. <br> You arrived at ${board[currentLocation]} <br> ${gameMessage}`;
+  }
+}
 
 function playGame() {
   result = Math.ceil(Math.random() * 6);
-  
   resultTotal += result;
   if (currentLocation + result > 20) {
     let diff = currentLocation + result - 20;
@@ -608,55 +637,17 @@ function playGame() {
     if(currentLocation === 19) {
       setTimeout(() => { 
         currentLocation = 11;
-        render();
-        console.log(`new pos: ${currentLocation}`);
         styleFields(currentLocation);
-      },
-        3000);
+        console.log(`new pos: ${currentLocation}`);
+        outId.innerHTML = `You are again at field_11. <br> Don't worry, keep trying!`;
+      }, 2000);
     }
   }
-  
   throwsCounter += 1;
-  gameMessage = specialFieldMessages[currentLocation];
-  console.log(`Throw number ${throwsCounter}, Current result: ${result}, Current location: ${currentLocation}.`);  
+  gameMessage = specialFieldMessages[currentLocation];  
   render();
 }
 
-
-function render() {
-  styleFields(currentLocation);
-  switch (currentLocation) {
-    case 0:
-      outId.innerHTML = `You are at the starting position. Throw a cube to move foreward.`;  
-      break;
-    case (20 || 12):{
-      outId.innerHTML = `You are at ${board[currentLocation]} <br> ${gameMessage}`;
-      btn.setAttribute("disabled", true)
-      let restartNode = document.createElement("input");
-      restartNode.type="button";
-      restartNode.value="Play again";
-      restartNode.style.display = "flex";
-      restartNode.style.margin = "auto";
-
-      restartNode.addEventListener("click", restartHandler , false)  
-      btn.parentNode.appendChild(restartNode);
-      function restartHandler() {
-        currentLocation = 0;
-        throwsCounter = 0;
-        resultTotal = 0;
-        gameMessage = "";
-        btn.removeAttribute("disabled");
-        restartNode.style.visibility = "hidden";
-        styleFields(currentLocation);
-        render();
-      }
-
-    }
-            break;
-    default:
-      outId.innerHTML = `Throw result: ${result}. <br> You arrived at ${board[currentLocation]} <br> ${gameMessage}`;
-  }
-}
 /*---------------------------------------------------template-----------------------------------------------------
 const map = [];
 map[0] = "field0";
