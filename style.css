@@ -12,28 +12,27 @@ p {
   justify-content: center;
 }*/
 
-
-.field {
-  display: inline-block;
-  border: 1px solid black;
-  width: 15px;
-  height: 15px;
-  margin: 5px;
+#game_title {
+  text-align: center;
 }
 
-.field:nth-of-type(13) {
+.field {
+  border: 1px solid black;
+}
+
+.row:nth-of-type(2)>.field:first-child {
   border: 2px solid red;
   font-weight: 800;
 }
 
-.field:nth-of-type(20) {
+.row:nth-of-type(2)>.field:nth-child(8) {
   border: 2px solid yellow;
   font-weight: 800;
 }
 
-#board {
-  display: flex;
-  justify-content: center;
+.row {
+  width: 80%;
+  margin: auto;
 }
 
 #startField {
@@ -46,13 +45,17 @@ p {
   margin: 30px auto;
 }
 
+.number, .field {
+  padding: 0;
+  margin: 0;
+}
+
 .number {
-  display: flex;
-  justify-content: center;
-  margin-top: 5%;
-  font-size: 0.8em;
+  text-align: center;
 }
 
 #outputid {
+  height: 60px;
   text-align: center;
+  margin-top: 15px;
 }
